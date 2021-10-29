@@ -1,0 +1,38 @@
+{
+    // Launch configuration for react application
+    "type": "react",
+    "request": "launch",
+    "name": "React Application",
+    "program": "${workspaceFolder}/src/index.js",
+    "args": [],
+    "stopOnEntry": false,
+    "outFiles": [
+        "${workspaceFolder}/dist/index.html"
+    ],
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "cwd": "${workspaceFolder}",
+    "sourceMaps": true,
+    "sourceMapPathOverrides": {
+        "webpack:///./src/index.js?": "webpack:///./src/index.js?"
+    },
+    "webRoot": "${workspaceFolder}/dist",
+    "webRootPath": "${workspaceFolder}/dist",
+    "outDir": "${workspaceFolder}/dist",
+    "configurations": [
+        {
+            "command": "yarn start",
+            "name": "Run yarn start",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
+        }
+    ],
+}
