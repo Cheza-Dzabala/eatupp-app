@@ -3,5 +3,6 @@ export const routes = {
     login: '/login',
     register: '/register',
     forgotPassword: '/forgot-password',
+    cart: '/cart',
     menu: '/menu/:menuId'
 }

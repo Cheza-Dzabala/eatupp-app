@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import logo from '../../images/logo.png';
 import LineIcon from 'react-lineicons';
 import { routes } from '../../routes';
 import { useUser } from 'reactfire';
 import { getAuth } from 'firebase/auth'
 import { Link } from 'react-router-dom';
+import { CartContext } from '../../context/cart-context';
 
 
 function Header() {
@@ -42,7 +43,11 @@ const AuthLinks = () => {
     </div>
 }
 
-const Authenticated = () => <div className="">
-    <input className="text-input" type="text" placeholder="Search Food" />
-    <span className="link-text" onClick={() => logout()}><LineIcon name="exit" /> {" "}Logout</span>
-</div>
+const Authenticated = () => {
+    const [orderItems, setOrderItems] = useContext(CartContext);
+    return <div className="">
+        <input className="text-input" type="text" placeholder="Search Food" />
+        {" "} <Link to={routes.cart} className="link-text" ><LineIcon name="cart" /> {" "}Cart<span className="cart-count">{orderItems.length}</span></Link>{" "}
+        <span className="link-text" onClick={() => logout()}><LineIcon name="exit" /> {" "}Logout</span>
+    </div>
+}

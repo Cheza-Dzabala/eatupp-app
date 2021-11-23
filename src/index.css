@@ -238,7 +238,7 @@
   }
 
   .menu-food-item {
-    @apply w-full h-20 shadow-sm flex flex-row my-10 cursor-pointer  
+    @apply w-full h-24 shadow-sm flex flex-row my-10 cursor-pointer  
   }
   .food-image {
     @apply rounded-md
@@ -255,5 +255,29 @@
   .pricing {
     @apply text-white bg-primary h-10 w-32 p-2 rounded-md text-center font-bold
   }
+
+  .cart-count {
+    @apply bg-primary text-white p-1 rounded-full text-center font-bold mr-3 ml-1
+  }
+
+  .add-to-cart-button {
+    @apply bg-primary text-white p-1 text-center font-bold mr-3 ml-1
+  }
   
+  /* cart page styles */
+  .cart-page {
+    @apply flex flex-col justify-center items-center py-32
+  }
+  
+  .cart-item{
+    @apply flex flex-row justify-between space-x-4 my-5 shadow-sm rounded-md
+  }
+
+  .cart-item-image{
+    @apply h-24 w-24 rounded-md
+  }
+
+  .order-button { 
+    @apply bg-primary text-white p-1 text-center font-bold rounded-md w-36 mb-10
+  }
 }
