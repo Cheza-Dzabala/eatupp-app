@@ -1,39 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router';
-import { getDoc, doc } from 'firebase/firestore';
-import { useFirestore } from 'reactfire';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { MenuModel } from '../data/menu';
 import { FoodItemModel } from '../data/food_item_model';
 import { CartContext } from '../context/cart-context';
+import axios from '../config/axios';
 
 function Menu(props) {
     const [orderItems, setOrderItems] = useContext(CartContext);
-    const firestore = useFirestore();
-    const storage = getStorage();
+
     const { menuId } = useParams();
 
     const [menu, setMenu] = useState(null);
     const [menuItems, setMenuItems] = useState([]);
 
     const getMenu = async () => {
-        const menuRef = doc(firestore, 'menu', menuId);
-        const menuDoc = await getDoc(menuRef);
-        const menu = new MenuModel(menuDoc.id, menuDoc.data());
-        const imageRef = ref(storage, menu.image);
-        const image = await getDownloadURL(imageRef);
-        menu.image = image;
-        menu.items.forEach(async item => {
-            const itemDoc = await getDoc(item);
-            const itemModel = new FoodItemModel(itemDoc.id, itemDoc.data());
-            const imageRef = ref(storage, itemModel.image);
-            const image = await getDownloadURL(imageRef);
-            itemModel.image = image;
-            setMenuItems(prevState => [...prevState, itemModel]);
-        });
-
-        setMenu(menu);
+        axios.get(`/menu/${menuId}`).then(res => {
+            const { data } = res;
+            setMenu(data);
+        }).catch(err => {
+            console.log(err);
+        })
+        axios.get(`/menu/items/${menuId}`).then(res => {  
+            const {data} = res;
+            data.forEach(item => {
+                setMenuItems(menuItems => [...menuItems, item]);
+            });
+         }).catch(err => {
+            console.log(err);
+        })
     }
 
     useEffect(() => {

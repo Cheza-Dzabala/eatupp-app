@@ -1,66 +1,56 @@
 import React, { useState } from 'react'
 import { routes } from '../routes'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore';
-import { useFirestore } from 'reactfire';
 import { useHistory } from "react-router-dom";
 import Error from './elements/Error';
+import axios from '../config/axios';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
 function Register() {
-    const auth = getAuth();
-    const fireStore = useFirestore();
-    const history = useHistory();
-
-    const resetError = () => {
-        setError({
-            hasError: false,
-            message: '',
-        })
-    }
-    const [error, setError] = useState({
-        hasError: false,
-        message: ''
+    const [open, setOpen] = useState(false);    
+    const [response, setResponse] = useState({
+        message: '',
+        severity: 'success'
     });
+
 
     const [user, setUser] = useState({
         firstName: '',
         lastName: '',
         phoneNumber: '',
         email: '',
-        preferred_name: '',
+        preferredName: '',
         password: '',
     });
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+      };
+
     const handleSubmit = async e => {
         e.preventDefault();
-        // Signup user to firebase and remove password
-        createUserWithEmailAndPassword(auth, user.email, user.password).then((userCredential) => {
-            userCredential.user.displayName = user.preferred_name;
-
-            updateProfile(userCredential.user, {
-                displayName: user.preferred_name,
-                phoneNumber: user.phoneNumber,
-            }).then(() => {
-                const usersRef = doc(fireStore, 'users', userCredential.user.uid);
-                setDoc(usersRef, {
-                    first_name: user.firstName,
-                    last_name: user.lastName,
-                    phone_number: user.phoneNumber,
-                    email: user.email,
-                    preferred_name: user.preferredName,
-                });
-                localStorage.setItem('user', JSON.stringify(user));
-                history.push(routes.home);
-            });
-            // Navigate to home
-
-        }).catch(error => {
-            setError({
-                hasError: true,
-                message: error.message
-            });
-            console.log(`Registration Error:: ${error}`);
-        });
+        axios.post('/auth/register', user).then(res => {
+            setResponse({
+                message: 'Successfully registered. Proceed to login',
+                severity: 'success'
+            })
+            setOpen(true);
+        }).catch(err => {
+            setResponse({
+                message: err.response.data.message,
+                severity: 'error'
+            })
+            setOpen(true);
+        })
     }
 
     // onChange function
@@ -74,10 +64,12 @@ function Register() {
 
     return <div className="main auth">
         <div className="auth-card">
-            {
-                error.hasError && <Error error={error} onClick={resetError} />
-            }
-            <p></p>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={response.severity} sx={{ width: '100%' }}>
+            {response.message}
+        </Alert>
+      </Snackbar>
+
             <p className="auth-heading">REGISTER</p>
             <form action="" className="auth-form" onSubmit={handleSubmit}>
                 <input type="text" name="firstName" className="text-input" onChange={handleChange} placeholder="First Name" />

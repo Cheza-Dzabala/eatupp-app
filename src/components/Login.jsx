@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { routes } from '../routes'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useHistory } from "react-router-dom";
-import { doc, getDoc } from 'firebase/firestore';
 import Error from './elements/Error';
-import { useFirestore } from 'reactfire';
+import { AuthContext } from '../context/auth-context';
+import axios from '../config/axios';
 
 function Login() {
-    const auth = getAuth();
-    const fireStore = useFirestore();
     const history = useHistory();
-
-    const [user, setUser] = useState({
+    const [user, setUser] = useContext(AuthContext);
+    const [userCredential, setUserCredential] = useState({
         email: '',
         password: '',
     });
@@ -27,33 +24,24 @@ function Login() {
         message: ''
     });
 
-
-
     const handleChange = (e) => {
-        setUser({
-            ...user,
+        setUserCredential({
+            ...userCredential,
             [e.target.name]: e.target.value
         })
     }
 
     const login = async (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, user.email, user.password)
-            .then(async (userCredential) => {
-                const usersRef = doc(fireStore, 'users', userCredential.user.uid);
-                const docSnap = await getDoc(usersRef);
-                if (docSnap.exists()) {
-                    window.localStorage.setItem('user', JSON.stringify(docSnap.data()));
-                    history.push(routes.home);
-                }
-            })
-            .catch(error => {
-                setError({
-                    hasError: true,
-                    message: error.message
-                });
-            });
-
+        axios.post('/auth/login/', userCredential).then(res => {
+            const {data} = res.data;
+            window.localStorage.setItem('token', data.access_token);
+            window.localStorage.setItem('user', JSON.stringify(data.user));
+            setUser(data.user);
+            history.push(routes.home);
+        }).catch(err => {
+            console.log({err})
+        })
     }
     return <div className="main auth">
         <div className="auth-card">

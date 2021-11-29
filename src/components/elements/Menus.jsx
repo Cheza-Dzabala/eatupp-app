@@ -5,24 +5,23 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useFirestore } from 'reactfire';
 import { MenuModel } from '../../data/menu';
 import { Link } from 'react-router-dom';
+import axios from '../../config/axios';
 
 function Menus() {
-    const firestore = useFirestore();
-    const storage = getStorage();
+  
     // Define array of menu with type Menu
     const [menus, setMenus] = React.useState([]);
 
     const getMenus = async () => {
-        const collectionQuery = query(collection(firestore, 'menu'));
-        // Asynchronous function to get all documents from collection
-        const querySnapshot = await getDocs(collectionQuery);
-        for (const doc of querySnapshot.docs) {
-            const menu = new MenuModel(doc.id, doc.data());
-            const imageRef = ref(storage, menu.image);
-            const image = await getDownloadURL(imageRef);
-            menu.image = image;
-            setMenus(menus => [...menus, menu]);
-        }
+        axios.get('/menu').then(res => {
+            const {data} = res;
+            console.log(data);
+            data.forEach(menu => {
+                setMenus(menus => [...menus, menu]);
+            })
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     // Execute getMenus function when component is mounted using
