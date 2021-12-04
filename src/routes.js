@@ -1,8 +1,15 @@
 export const routes = {
-    home: '/',
-    login: '/login',
-    register: '/register',
-    forgotPassword: '/forgot-password',
-    cart: '/cart',
-    menu: '/menu/:menuId'
-}
+	home: '/',
+	login: '/login',
+	register: '/register',
+	forgotPassword: '/forgot-password',
+	cart: '/cart',
+	menu: '/menu/:menuId',
+	admin: '/admin',
+	orders: '/admin/orders',
+	getOrder: '/admin/orders/:orderId',
+	adminMenu: '/admin/menu',
+	adminMenuCreate: '/admin/menu/create',
+	adminViewMenu: '/admin/menu/:menuId',
+	adminAddMenuItem: '/admin/menu/:menuId/add-item',
+};

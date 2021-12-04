@@ -11,10 +11,19 @@ import { useState } from 'react';
 import { CartContext } from './context/cart-context';
 import { AuthContext } from './context/auth-context';
 import Cart from './components/Cart';
+import AdminLayout from './Admin/Layout';
+import AdminHome from './Admin/AdminHome';
+import Orders from './Admin/Orders';
+import ViewOrder from './Admin/ViewOrder';
+import AdminMenu from './Admin/AdminMenu';
+import CreateMenu from './Admin/sub-pages/menu/CreateMenu';
+import ViewMenu from './Admin/sub-pages/menu/ViewMenu';
+import AddItem from './Admin/sub-pages/menu/AddItem';
 
 function App() {
 	const [orderItems, setOrderItems] = useState([]);
 	const [user, setUser] = useState([]);
+
 	return (
 		<AuthContext.Provider value={[user, setUser]}>
 			<CartContext.Provider value={[orderItems, setOrderItems]}>
@@ -43,6 +52,41 @@ function App() {
 							<Layout>
 								<Cart />
 							</Layout>
+						</Route>
+						<Route exact path={routes.admin}>
+							<AdminLayout>
+								<AdminHome />
+							</AdminLayout>
+						</Route>
+						<Route exact path={routes.orders}>
+							<AdminLayout>
+								<Orders />
+							</AdminLayout>
+						</Route>
+						<Route exact path={routes.getOrder}>
+							<AdminLayout>
+								<ViewOrder />
+							</AdminLayout>
+						</Route>
+						<Route exact path={routes.adminMenu}>
+							<AdminLayout>
+								<AdminMenu />
+							</AdminLayout>
+						</Route>
+						<Route exact path={routes.adminMenuCreate}>
+							<AdminLayout>
+								<CreateMenu />
+							</AdminLayout>
+						</Route>
+						<Route exact path={routes.adminViewMenu}>
+							<AdminLayout>
+								<ViewMenu />
+							</AdminLayout>
+						</Route>
+						<Route exact path={routes.adminAddMenuItem}>
+							<AdminLayout>
+								<AddItem />
+							</AdminLayout>
 						</Route>
 
 						<Route path="*">

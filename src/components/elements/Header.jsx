@@ -49,6 +49,7 @@ const Authenticated = () => {
     return <div className="">
         <input className="text-input" type="text" placeholder="Search Food" />
         {" "} <Link to={routes.cart} className="link-text" ><LineIcon name="cart" /> {" "}Cart<span className="cart-count">{orderItems.length}</span></Link>{" "}
+        {user.role == 'admin' &&  <Link to={routes.admin} className="link-text" ><LineIcon name="cogs" /> {" "}Admin Panel {" "}</Link>}
         <span className="link-text" onClick={() => logout()}><LineIcon name="exit" /> {" "}Logout</span>
     </div>
 }

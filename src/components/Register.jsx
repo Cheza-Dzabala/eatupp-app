@@ -1,16 +1,11 @@
 import React, { useState } from 'react'
 import { routes } from '../routes'
-import { useHistory } from "react-router-dom";
 import Error from './elements/Error';
 import axios from '../config/axios';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import {Alert} from './alerts/Alert'
 
 
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
 
 function Register() {
     const [open, setOpen] = useState(false);    

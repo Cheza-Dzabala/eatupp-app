@@ -4,9 +4,18 @@ import { useHistory } from "react-router-dom";
 import Error from './elements/Error';
 import { AuthContext } from '../context/auth-context';
 import axios from '../config/axios';
+import Snackbar from '@mui/material/Snackbar';
+import {Alert} from '../components/alerts/Alert';
 
 function Login() {
     const history = useHistory();
+
+    const [open, setOpen] = useState(false);    
+    const [response, setResponse] = useState({
+        message: '',
+        severity: 'success'
+    });
+
     const [user, setUser] = useContext(AuthContext);
     const [userCredential, setUserCredential] = useState({
         email: '',
@@ -31,6 +40,13 @@ function Login() {
         })
     }
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+      };
+
     const login = async (e) => {
         e.preventDefault();
         axios.post('/auth/login/', userCredential).then(res => {
@@ -39,11 +55,21 @@ function Login() {
             window.localStorage.setItem('user', JSON.stringify(data.user));
             setUser(data.user);
             history.push(routes.home);
-        }).catch(err => {
-            console.log({err})
+        }).catch(({response} )=> {
+            console.log(response);
+            setResponse({
+                message: response.data.message,
+                severity: 'error'
+            })
+            setOpen(true);
         })
     }
     return <div className="main auth">
+           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={response.severity} sx={{ width: '100%' }}>
+            {response.message}
+        </Alert>
+      </Snackbar>
         <div className="auth-card">
             {
                 error.hasError && <Error error={error} onClick={resetError} />
