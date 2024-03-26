@@ -1,10 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { MenuModel } from '../data/menu';
-import { FoodItemModel } from '../data/food_item_model';
-import { CartContext } from '../context/cart-context';
 import axios from '../config/axios';
+import { CartContext } from '../context/cart-context';
 
 function Menu(props) {
 	const [orderItems, setOrderItems] = useContext(CartContext);
@@ -68,7 +66,7 @@ function Menu(props) {
 				{menu ? (
 					<div className="full-menu">
 						<img
-							src={`${process.env.REACT_APP_API_URL}files/${menu.image}`}
+							src={`${menu.image}`}
 							alt="menu"
 							className="menu-image-full"
 						/>

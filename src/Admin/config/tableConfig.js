@@ -77,18 +77,6 @@ export const menuTableHeaders = [
 	{
 		name: 'image',
 		label: 'image',
-		options: {
-			customBodyRender: (value, tableMeta, updateValue) => {
-				return (
-					<img
-						src={`${baseURL}files/${value}`}
-						className="image-on-table"
-						alt="item"
-						style={{ width: '100px' }}
-					/>
-				);
-			},
-		},
 	},
 	{
 		name: 'name',
@@ -124,7 +112,7 @@ export const viewMenuItemsTableHeaders = [
 			customBodyRender: (value, tableMeta, updateValue) => {
 				return (
 					<img
-						src={`${baseURL}files/${value}`}
+						src={`${value}`}
 						className="image-on-table"
 						alt="item"
 						style={{ width: '100px' }}

@@ -1,9 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { collection, query, getDocs } from 'firebase/firestore';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import { useFirestore } from 'reactfire';
-import { MenuModel } from '../../data/menu';
 import { Link } from 'react-router-dom';
 import axios from '../../config/axios';
 
@@ -51,7 +47,7 @@ function Menus() {
 						<img
 							alt={menu.name}
 							className="menu-image"
-							src={`${process.env.REACT_APP_API_URL}files/${menu.image}`}
+							src={`${menu.image}`}
 						/>
 					</div>
 				);

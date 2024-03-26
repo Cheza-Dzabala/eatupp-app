@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { routes } from '../routes';
-import Error from './elements/Error';
-import axios from '../config/axios';
 import Snackbar from '@mui/material/Snackbar';
+import React, { useState } from 'react';
+import axios from '../config/axios';
+import { routes } from '../routes';
 import { Alert } from './alerts/Alert';
 
 function Register() {
@@ -41,6 +40,7 @@ function Register() {
 				setOpen(true);
 			})
 			.catch((err) => {
+				console.log({ err });
 				setResponse({
 					message: err.response.data.message,
 					severity: 'error',
