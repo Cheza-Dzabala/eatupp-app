@@ -80,7 +80,7 @@ function Menu(props) {
 										key={item.id}
 									>
 										<img
-											src={`${process.env.REACT_APP_API_URL}files/${item.image}`}
+											src={`${item.image}`}
 											alt={item.name}
 											width="100"
 											className="food-image"

@@ -77,6 +77,14 @@ export const menuTableHeaders = [
 	{
 		name: 'image',
 		label: 'image',
+		customBodyRender: (value, tableMeta, updateValue) => {
+			<img
+				src={`${value}`}
+				className="image-on-table"
+				alt="item"
+				style={{ width: '100px' }}
+			/>;
+		},
 	},
 	{
 		name: 'name',
