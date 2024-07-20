@@ -1,22 +1,26 @@
 {
-    // Launch configuration for react application
+    
+  // Launch configuration for react application
     "type": "react",
     "request": "launch",
     "name": "React Application",
     "program": "${workspaceFolder}/src/index.js",
-    "args": [],
+    "args": ["start"],
     "stopOnEntry": false,
     "outFiles": [
         "${workspaceFolder}/dist/index.html"
     ],
     "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "BROWSER": "none",
+        "NODE_OPTIONS": "--openssl-legacy-provider"
     },
     "cwd": "${workspaceFolder}",
     "sourceMaps": true,
     "sourceMapPathOverrides": {
         "webpack:///./src/index.js?": "webpack:///./src/index.js?"
     },
+    
     "webRoot": "${workspaceFolder}/dist",
     "webRootPath": "${workspaceFolder}/dist",
     "outDir": "${workspaceFolder}/dist",
